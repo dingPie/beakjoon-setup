@@ -1,18 +1,20 @@
 // // 3. 여러 줄의 값들을 입력받을 때
-const dir = "./test/17298.txt";
+const fileName = __filename.split("/question/")[1].split(".js")[0];
+const dir = `../test/${fileName}.txt`;
 // const dir = "/dev/stdin";
 
 const fs = require("fs");
+
 const input = fs.readFileSync(dir).toString().trim().split("\n");
 const nums = input[1].split(" ").map((v) => Number(v));
 const answer = [];
-
 const stack = [];
+
 for (let i = nums.length - 1; i >= 0; i--) {
-  while (!!stack.length && stack.at(-1) <= nums[i]) {
+  while (!!stack?.length && stack?.at(-1) <= nums[i]) {
     stack.pop();
   }
-  if (!!stack.length) answer.push(stack.at(-1));
+  if (!!stack?.length) answer.push(stack.at(-1));
   else answer.push(-1);
   stack.push(nums[i]);
 }
