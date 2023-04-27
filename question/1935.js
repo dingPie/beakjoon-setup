@@ -11,16 +11,14 @@ let str = input[1];
 const nums = input.slice(2);
 const regex = /[\*\-\+\/]/;
 
-console.log(nums);
+const obj = {};
+nums.forEach((v, i) => {
+  obj[String.fromCharCode(65 + i)] = Number(v);
+});
 
-let idx = 0;
-const arr = [];
-str.split("").forEach((v) => {
-  if (regex.test(v)) arr.push(v);
-  else {
-    arr.push(Number(nums[idx]));
-    idx++;
-  }
+const arr = str.split("").map((v) => {
+  if (regex.test(v)) return v;
+  else return obj[v];
 });
 
 let i = 0;
