@@ -8,8 +8,8 @@ const input = fs.readFileSync(dir).toString().trim();
 
 const arr = input.split("");
 
-console.log(arr);
 // A+B-C*(D+(E-F)+(G*F+(I-J))/K+L-(M-N)+N)+O-(P-Q)+R
+// A+B-C*(D+(E-F)+(G*F+IJ-))/K+L-(M-N)+N)+O-(P-Q)+R
 while (arr.includes("(")) {
   const bracket = [];
   for (let i = 0; i < arr.length; i++) {
@@ -20,9 +20,9 @@ while (arr.includes("(")) {
       const start = bracket.pop();
       const [num1, exp, num2] = arr.slice(start + 1, i);
       const tt = num1 + num2 + exp;
-      arr.splice(start, 5, tt);
-      i -= 4;
-      console.log("ddd", arr, bracket, i);
+      const range = i - start;
+      arr.splice(start, range + 1, tt);
+      i -= range;
     }
   }
 }
