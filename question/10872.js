@@ -5,3 +5,11 @@ const dir = `../test/${fileName}.txt`;
 
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim();
+let num = Number(input);
+let answer = 1;
+
+while (num > 0) {
+  answer *= num;
+  num--;
+}
+console.log(answer);
