@@ -7,19 +7,23 @@ const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim();
 const [n, r] = input.split(" ").map((v) => Number(v));
 
-const getZero = (num) => {
-  let two = 0;
+const getZero = (end, start = 1) => {
   let five = 0;
-  let s = 1;
-  while (s <= num) {
-    if (s % 2 === 0) two++;
-    if (s % 5 === 0) five++;
-    s++;
+
+  while (start <= end) {
+    if (start % 5 === 0) {
+      let t = start;
+      while (t % 5 === 0) {
+        five++;
+        t = t / 5;
+      }
+    }
+    start++;
   }
-  return Math.min(two, five) - 1;
+  return five;
 };
 
-console.log(getZero(n), getZero(n) - getZero(n - r));
+console.log(getZero(n, r) - getZero(n - r));
 
 const getPactorial = (start, end = 0) => {
   let answer = 1n;
@@ -29,12 +33,6 @@ const getPactorial = (start, end = 0) => {
   }
   return answer;
 };
-console.log(
-  getPactorial(n, r),
-  getPactorial(n - r),
-  getPactorial(n, r) / getPactorial(n - r)
-);
-
 // const answer = getPactorial(n, r) / getPactorial(n - r);
 // const str = answer.toString();
 // console.log(
