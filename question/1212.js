@@ -17,5 +17,3 @@ for (let i = 1; i < input.length; i++) {
 }
 
 console.log(answer);
-
-// -32 + 16 - 4 +2 + 1
