@@ -8,17 +8,37 @@ const input = fs.readFileSync(dir).toString().trim();
 
 let number = Number(input);
 
-console.log("test", Math.abs(number).toString(2));
-
 let answer = "";
+
+const getDigit = (num) => {
+  if (num > 0) {
+    let t = 1;
+    let idx = 0;
+    while (num > t) {
+      idx += 2;
+      t += 2 ** idx;
+    }
+    return idx;
+  } else {
+    let t = -2;
+    let idx = 1;
+    while (num < t) {
+      idx += 2;
+      t -= 2 ** idx;
+    }
+    return idx;
+  }
+};
+
+let digit = getDigit(number);
 
 const find = (num = 0, str = "", binaryIdx = 0) => {
   if (num === number) {
     answer = str;
     return str;
   }
+  if (binaryIdx > digit) return;
   const target = binaryIdx % 2 === 0 ? 2 ** binaryIdx : -(2 ** binaryIdx);
-  if (Math.abs(number * 4) < Math.abs(target)) return;
 
   const added = "1" + str;
   const skipped = "0" + str;
@@ -62,32 +82,60 @@ console.log(answer);
 
 // 무슨 자릿수부터 할 지 알아야겠네 그럼
 
-const getDigit = (num) => {
-  if (num > 0) {
-    let t = 1;
-    let idx = 0;
-    while (num > t) {
-      idx += 2;
-      t += 2 ** idx;
-    }
-    return idx + 1;
-  } else {
-    let t = -2;
-    let idx = 1;
-    while (num < t) {
-      idx += 2;
-      t -= 2 ** idx;
-    }
-    return idx + 1;
-  }
-};
-// 총 길이를 구한다. 해당 digit 부터 하나씩 진행하면 된다.
-// 처음은 무조건 1로, 그 이후 해당 cell에서 구하면 되는데.
-const digit = getDigit(number);
+// const getDigit = (num) => {
+//   if (num > 0) {
+//     let t = 1;
+//     let idx = 0;
+//     while (num > t) {
+//       idx += 2;
+//       t += 2 ** idx;
+//     }
+//     return idx;
+//   } else {
+//     let t = -2;
+//     let idx = 1;
+//     while (num < t) {
+//       idx += 2;
+//       t -= 2 ** idx;
+//     }
+//     return idx;
+//   }
+// };
+
+// let digit = getDigit(number);
 console.log("자릿수", digit, number);
 
-let answer2 = "1"; // 첫자리는 무조건 1
-while (number !== 0) {
-  break;
-  // 0이 될 때 까지 진행
+let answer2 = "1"; // 첫자리는 무조건, 진행
+number = number - (-2) ** digit;
+digit--;
+
+while (number !== 0 && digit >= 0) {
+  const next = number - (-2) ** digit;
+  console.log({ number }, { next }, digit); //  Math.abs(next), Math.abs(number)
+  if (Math.abs(next) <= Math.abs(number)) {
+    number = next;
+    answer2 += "1";
+  } else {
+    answer2 += "0";
+  }
+
+  digit--;
 }
+
+console.log("답?", answer2, number);
+
+// ? = -13 -(-32) -> 19
+// ? = 19 - 16 -> 3
+// ? = 3 -(-8) -> 11, 3이 더 작음.
+// ? = 3 -4 -> -1
+// ? = -1 -(-2) -> 1
+// ? = 1 -1 -> 0
+
+// -32 + 16
+
+// ? = -19 -(-32) -> 13
+// ? = 13 - 16 -> -3
+// ? = -3 -(-8) -> 5, 3이 더 작음.
+// ? = 3 -4 -> -1
+// ? = -1 -(-2) -> 1
+// ? = 1 -1 -> 0
