@@ -110,13 +110,11 @@ number = number - (-2) ** digit;
 digit--;
 
 while (number !== 0 && digit >= 0) {
-  zx;
   const next = number - (-2) ** digit;
   console.log({ number }, { next }, digit); //  Math.abs(next), Math.abs(number)
   if (Math.abs(next) <= Math.abs(number)) {
     number = next;
     answer2 += "1";
-    zx;
   } else {
     answer2 += "0";
   }
@@ -141,78 +139,3 @@ console.log("답?", answer2, number);
 // ? = 3 -4 -> -1
 // ? = -1 -(-2) -> 1
 // ? = 1 -1 -> 0
-const getDigit = (num) => {
-  if (num > 0) {
-    let t = 1;
-    let idx = 0;
-    while (num > t) {
-      idx += 2;
-      t += 2 ** idx;
-    }
-    return idx;
-  } else {
-    let t = -2;
-    let idx = 1;
-    while (num < t) {
-      idx += 2;
-      t -= 2 ** idx;
-    }
-    return idx;
-  }
-};
-// 총 길이를 구한다. 해당 digit 부터 하나씩 진행하면 된다.
-// 처음은 무조건 1로, 그 이후 해당 cell에서 구하면 되는데.
-
-let digit = getDigit(number); // 첫자리는 무조건 1
-// console.log("fdfdfdfffd", digit);
-console.log("test", number, (-2) ** digit - number);
-number = (-2) ** digit - number;
-digit--;
-// console.log("자릿수", digit, number);
-let answer2 = "1"; // 첫자리는 무조건 1
-while (number !== 0 && digit >= 0) {
-  // if (digit % 2 === 0) {
-  //   // 짝수, 양수
-  //   const t = (-2) ** digit;
-  //   console.log("TEST", t);
-  // } else {
-  //   const t = (-2) ** digit;
-  //   console.log("TEST", t);
-  // }
-  const binaryNum = (-2) ** digit;
-  let next = binaryNum - number;
-
-  if (digit % 2 === 0) {
-    next = binaryNum + number;
-  }
-  console.log(number, next, binaryNum, answer2);
-
-  if (Math.abs(next) <= Math.abs(number)) {
-    answer2 += "1";
-    number = next;
-  } else {
-    answer2 += "0";
-  }
-  digit--;
-
-  // break;
-  // 0이 될 때 까지 진행
-}
-
-console.log("fdfdfdfdfdf", answer2, number);
-
-// -13 -> -32 - (-13) -> -19
-// -19 -> 16 - (-19) -> -3
-// -3 -> -8 - (-3) -> -5 -> 안함
-// -3 -> 4
-
-// 0, 1 을 주는 다른 조건이 필요할 것 같은데......
-
-// -32 + ? = -13 -> 19
-// 16 + ? = 19 -> 3
-// -8 + ? -> 3 -> 11 ? -> 더 커짐, 스킵
-// 4 + ? -> 3 -> -1
-// -2 + ? -> -1 -> 1
-// 1 + ? -> 1 -> 0
-
-// 절대값 맞는것같은데..
