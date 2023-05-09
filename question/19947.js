@@ -5,6 +5,7 @@ const dir = `../test/${fileName}.txt`;
 
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split(" ");
+const [asset, period] = input;
 
 const bank = {
   1: 1.05,
@@ -12,21 +13,32 @@ const bank = {
   5: 1.35,
 };
 
-let [asset, period] = input;
-const arr = [];
-while (!!period) {
-  if (period >= 5) {
-    period -= 5;
-    arr.push(5);
-    // asset = Math.floor(asset * 1.35);
-  } else if (period >= 3) {
-    arr.push(3);
-    period -= 3;
-    // asset = Math.floor(asset * 1.2);
-  } else {
-    arr.push(1);
-    period -= 1;
-    // asset = Math.floor(asset * 1.05);
+const bankObj = {
+  1: [1.05],
+  3: [1.2],
+  5: [1.35],
+};
+
+const getMaxOrder = (num) => {
+  let result = [];
+  let max = 1;
+  for (const key in bank) {
+    if (bankObj[num - key]) {
+      const red = bankObj[num - key].reduce((a, c) => a * c, 1);
+      if (red * bankObj[key] > max) {
+        max = red * bankObj[key];
+        result = [...bankObj[key], ...bankObj[num - key]];
+      }
+    }
+  }
+
+  return result;
+};
+
+for (let i = 2; i <= 10; i++) {
+  if (!bankObj[i]) {
+    const maxOrder = getMaxOrder(i);
+    bankObj[i] = maxOrder;
   }
 }
 
@@ -34,35 +46,19 @@ const find = (arr) => {
   if (arr.length === 1) return arr.map((v) => [v]);
 
   const result = [];
-  arr.forEach((fix, idx, origin) => {
+  arr.forEach((fix, idx) => {
     const rest = [...arr.slice(0, idx), ...arr.slice(idx + 1)];
-    const test = find(rest);
-    const compose = test.map((v) => [fix, ...v]);
+    const newArr = find(rest);
+    const compose = newArr.map((v) => [fix, ...v]);
     result.push(...compose);
   });
   return result;
 };
-const orders = find(arr);
+
+const orders = find(bankObj[period]);
 
 const incomes = orders.map((order) =>
-  order.reduce((a, c) => Math.floor(a * bank[c]), asset)
+  order.reduce((a, c) => Math.floor(a * c), asset)
 );
 
-console.log(incomes);
 console.log(Math.max(...incomes));
-
-// 이거 왜이러냐...
-
-// const test = 35252;
-// console.log(Math.floor(Math.floor(Math.floor(test * 1.35) * 1.2) * 1.05));
-// console.log(Math.floor(Math.floor(Math.floor(test * 1.2) * 1.2) * 1.2));
-// console.log(1.2 ** 3);
-// console.log(1.35 * 1.2 * 1.05);
-
-// console.log(Math.floor(Math.floor(Math.floor(test * 1.35) * 1.05) * 1.05));
-// console.log(Math.floor(Math.floor(Math.floor(test * 1.05) * 1.35) * 1.05));
-// console.log(Math.floor(Math.floor(Math.floor(test * 1.05) * 1.05) * 1.35));
-
-// 소숫점 버림
-// 기간은 0부터 10까지
-// 각 지점까지 계산했을때 최고의 금액을 모아서?
