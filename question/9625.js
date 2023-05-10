@@ -5,23 +5,14 @@ const dir = `../test/${fileName}.txt`;
 
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim();
+const number = Number(input);
 
-let str = "a";
+const fib = [0, 1];
 
-for (let i = 0; i < Number(input); i++) {
-  const newStr = str.split("").map((v) => (v === "a" ? "b" : "ba"));
-  str = newStr.join("");
+for (let i = 2; i <= number; i++) {
+  fib[i] = fib[i - 2] + fib[i - 1];
 }
-
-let aCount = 0;
-let bCount = 0;
-
-for (let i = 0; i < str.length; i++) {
-  if (str[i] === "a") aCount++;
-  else bCount++;
-}
-
-console.log(`${aCount} ${bCount}`);
+console.log(`${fib[number - 1]} ${fib[number]}`);
 
 // 버튼 한 번 눌렀을때 a -> b, b -> ba
 
