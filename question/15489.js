@@ -25,8 +25,8 @@ let answer = 0;
 
 for (let i = 0; i < w; i++) {
   for (let j = 0; j <= i; j++) {
-    const value = pascal[r + i - 1][j];
-    console.log(r + i - 1, j, value);
+    const value = pascal[r + i - 1][c + j - 1];
+    // console.log(r + i - 1, c + j - 1, value);
     answer += value;
   }
 }
