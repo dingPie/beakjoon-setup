@@ -5,9 +5,44 @@ const dir = `../test/${fileName}.txt`;
 
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split("\n");
-let day = Number(input[0]);
-const arr = input.slice(1).map((v) => v.split(" "));
-console.log(arr);
+
+const arr = input.slice(1).map((v) => v.split(" ").map((v) => Number(v)));
+
+const days = Number(input[0]);
+// DP 풀이
+const dp = Array(days).fill(0);
+
+for (let i = 0; i < arr.length; i++) {
+  const [period, price] = arr[i];
+  if (days - i < period) continue; // 남은 날짜가 없으면 continue;
+  dp[i] = dp[i] + price; // 현재 dp는 이전값 + 금액이다.
+
+  // 현재 예약을 받았으면 그 이후 기간부터 상담이 가능하다.
+  for (let j = i + period; j < arr.length; j++) {
+    if (dp[i] > dp[j]) dp[j] = dp[i];
+    // 현재 방식(예약) 으로 번 비용이 이전 방법으로 번 비용보다 많으면 갱신 (현재 i를 더해서 접근할 수 있는 이전 목록에 전부 접근함/)
+  }
+}
+console.log(Math.max(...dp));
+
+// 탐욕법 풀이
+// const totalDay = Number(input[0]);
+// let answer = 0;
+// const find = (arr, day, total = 0) => {
+//   if (day === 0 || !arr.length) {
+//     if (total > answer) answer = total;
+//   }
+//   for (let i = 0; i < arr.length; i++) {
+//     const [period, price] = arr[i];
+//     if (period <= day && period <= arr.length - i) {
+//       find(arr.slice(i + period), day - period, total + price);
+//     }
+
+//     find(arr.slice(i + 1), day, total);
+//   }
+// };
+
+// find(arr, totalDay);
 
 // 일단 N이 크지 않으니, (최대 15) 부담은 없다.
 // n일을 진료하기로 선택했을 때..
@@ -24,6 +59,3 @@ console.log(arr);
 // 여러 방법으로 최적화한다.
 
 // 각 day별 최대값 dp 초기화
-const dp = {};
-for (let i = 0; i <= day; i++) dp[i] = 0;
-console.log(dp);
