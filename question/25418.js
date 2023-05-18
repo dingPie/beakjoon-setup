@@ -8,31 +8,35 @@ const input = fs.readFileSync(dir).toString().trim().split(" ");
 
 const [a, k] = input.map((v) => Number(v));
 
-const dp = {
-  [a]: 0,
-};
-// 배열로?
-console.log(a, k, dp);
+const find = (a, k) => {
+  const dp = {
+    [a]: 0,
+  };
+  const need = [a];
 
-const find = () => {
-  const need = [k];
   while (!!need.length) {
     const target = need.pop();
     const added = target + 1;
     const multiple = target * 2;
-    if (dp[added] === undefined) {
-      dp[added] = dp[target] + 1;
-      need.push(added);
-    } else {
-      if (dp[target] + 1 < dp[added]) dp[added] = dp[target] + 1;
-    }
-    if (dp[multiple] === undefined) {
+
+    if ((!dp[multiple] || dp[target] + 1 < dp[multiple]) && multiple < k) {
       dp[multiple] = dp[target] + 1;
       need.push(multiple);
-    } else {
-      if (dp[target] + 1 < dp[multiple]) dp[multiple] = dp[target] + 1;
-    }
+    } else if (
+      multiple === k &&
+      (!dp[multiple] || dp[target] + 1 < dp[multiple])
+    )
+      dp[multiple] = dp[target] + 1;
+
+    if ((!dp[added] || dp[target] + 1 < dp[added]) && added < k) {
+      dp[added] = dp[target] + 1;
+      need.push(added);
+    } else if (added === k && (!dp[added] || dp[target] + 1 < dp[added]))
+      dp[added] = dp[target] + 1;
   }
+
+  return dp[k];
 };
 
-// dp짜는중
+const answer = find(a, k);
+console.log(answer);
