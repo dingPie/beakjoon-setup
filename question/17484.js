@@ -12,13 +12,9 @@ const methods = [-1, 0, 1];
 // console.log(arr);
 
 console.log(arr);
-// 시작점
-for (let i = 0; i < m; i++) {
-  let c = 0;
 
-  console.log(start);
-  // 특정 시작점부터 시작하여 가장 작은 점을 찾아가는 방법 (더하는 방법) 으로 작업해보자.
-}
+//진짜모르겠다...
+// 시작점
 
 // 각 j부터 시작하는걸 고정값으로 두고 해볼까.
 
