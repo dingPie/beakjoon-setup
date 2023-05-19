@@ -7,27 +7,20 @@ const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split("\n");
 
 const arr = input.slice(1).map((v) => v.split(" ").map((v) => [Number(v), -1]));
+const [n, m] = input[0].split(" ").map((v) => Number(v));
 const methods = [-1, 0, 1];
 // console.log(arr);
 
-for (let i = 0; i < arr.length - 2; i++) {
-  const row = arr[i];
-  console.log(row);
-  for (let j = 0; j < row.length; j++) {
-    let result = [];
-    const curr = arr[i][j];
-    const next = arr[i + 1][j];
-    methods.forEach((method, idx) => {
-      if (idx !== curr[1] && arr[i + 1][j + method]) {
-        result.push(arr[i + 1][j + method]);
-      }
-    });
+console.log(arr);
+// 시작점
+for (let i = 0; i < m; i++) {
+  let c = 0;
 
-    console.log("next", result);
-    // 여기서 i+2 까지 한번 구해보자....
-  }
-  //   console.log(row);
+  console.log(start);
+  // 특정 시작점부터 시작하여 가장 작은 점을 찾아가는 방법 (더하는 방법) 으로 작업해보자.
 }
+
+// 각 j부터 시작하는걸 고정값으로 두고 해볼까.
 
 // console.log(arr);
 
