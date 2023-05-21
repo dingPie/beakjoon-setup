@@ -11,7 +11,6 @@ const arr = input
   .map((v, i) => v.split(" ").map((v) => Number(v)));
 
 const answer = arr.map(([s, e]) => {
-  if (s === 0) return 0;
   s = BigInt(s);
   e = BigInt(e);
   let prev = 1n;
