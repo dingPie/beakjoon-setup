@@ -13,12 +13,12 @@ const dp = Array(cnt).fill(1);
 
 for (let i = cnt - 2; i >= 0; i--) {
   for (let j = i + 1; j < cnt; j++) {
-    if (numbers[i] < numbers[j]) {
+    if (numbers[i] < numbers[j] && dp[i] <= dp[j]) {
       dp[i] = dp[j] + 1;
-      break;
+      // break;
     }
   }
-  console.log(dp);
+  // console.log(dp);
 }
 
 console.log(Math.max(...dp));
