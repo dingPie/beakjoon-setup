@@ -8,10 +8,6 @@ const input = fs.readFileSync(dir).toString().trim();
 
 let num = Number(input);
 
-// 제곱수의 합을 구할 때 최소값.
-
-// 최대가 10만, 그 이전까지 제곱수에는 다 1.
-
 const dp = {};
 
 const sqrts = [];
@@ -21,15 +17,20 @@ for (let i = 1; i <= Math.sqrt(num); i++) {
   sqrts.push(i ** 2);
 }
 
-console.log(sqrts);
-
 for (let i = 2; i <= num; i++) {
   if (dp[i]) continue;
 
   for (let j = 0; j < sqrts.length; j++) {
-    // if (!dp[i] || dp[i] > dp[i - sqrts[j]] + dp[sqrts[j]]) {
-    //   dp[i] = dp[i - sqrts[i]] + dp[sqrts[i]];
-    // }
-    // sqrt만 돌리는 방향으로 수정해야 함.
+    const sqrt = sqrts[j];
+    if (!dp[i] || dp[i] > dp[i - sqrt] + dp[sqrt]) {
+      dp[i] = dp[i - sqrt] + dp[sqrt];
+      if (dp[i] === 2) break;
+    }
   }
 }
+
+console.log(dp[num]);
+
+// 제곱수의 합을 구할 때 최소값.
+
+// 최대가 10만, 그 이전까지 제곱수에는 다 1.
