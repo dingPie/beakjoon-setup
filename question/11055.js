@@ -6,16 +6,19 @@ const dir = `../test/${fileName}.txt`;
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split("\n");
 
-// 이것도 dp를 이용해서 이전 값까지 합치면서
 const cnt = Number(input[0]);
 const numbers = input[1].split(" ").map((v) => Number(v));
 
 const dp = Array(cnt).fill(0);
 
 for (let i = 0; i < cnt; i++) {
-  for (let j = i; j >= 0; j--) {
-    // 설계부터 다시하자..ㅎ
+  let max = numbers[i];
+  for (let j = 0; j < i; j++) {
+    if (numbers[j] < numbers[i] && numbers[i] + dp[j] > max) {
+      max = dp[j] + numbers[i];
+    }
   }
+  dp[i] = max;
 }
 
 console.log(Math.max(...dp));
