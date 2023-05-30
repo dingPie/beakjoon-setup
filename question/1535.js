@@ -17,19 +17,23 @@ const arr = damage
   });
 
 let answer = 0;
-for (let i = 0; i < arr.length; i++) {
-  let sum = 0;
-  let hp = 100;
-  for (let j = i; j < arr.length; j++) {
-    const [deal, heal] = arr[j];
 
-    if (hp - deal > 0) {
-      sum += heal;
-      hp -= deal;
+arr.forEach((v, i) => {
+  let costs = 100;
+  let points = 0;
+  for (let j = i; j < arr.length; j++) {
+    const [cost, point] = arr[j];
+    if (costs - cost > 0) {
+      costs -= cost;
+      points += point;
     }
   }
-  if (answer < sum) answer = sum;
-}
+
+  if (answer < points) answer = points;
+});
 
 console.log(answer);
+
 // 20명 이하이므로 dp만 잘 활용한다면 몇번 반복해도 됨
+
+// 조합 문제로 풒 수 있긴 할텐데, 이게 어디가 dp지?
