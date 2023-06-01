@@ -13,44 +13,18 @@ const arr = costs.map((v, i) => ({ cost: v, point: points[i] }));
 
 const dp = Array(100).fill(0); // dp를 기록할 100개?
 
-arr.forEach((v) => {
-  if (dp[v.cost] !== undefined) dp[v.cost] = v.point;
+console.log(dp);
+
+// 이런식으로 100번까지 움직이면서..?
+dp.forEach((d) => {
+  arr.forEach((v) => {
+    const { cost, point } = v;
+    console.log(cost, point);
+  });
 });
 
-const gets = (arr, pick, energe = 100) => {
-  const result = [];
-  if (energe < 0) return [];
-  if (pick === 1) return arr.map((v) => [v]);
-
-  arr.forEach((fix, idx, origin) => {
-    const rest = arr.slice(idx + 1);
-    const combi = gets(rest, pick - 1, energe - fix.cost);
-    const attached = combi.map((v) => [fix, ...v]);
-    result.push(...attached);
-  });
-  return result;
-};
-
-for (let p = 2; p <= Number(input[0]); p++) {
-  const test = gets(arr, p).map((v) => {
-    let sumCost = 0;
-    let sumPoint = 0;
-    v.forEach((j) => {
-      sumCost += j.cost;
-      sumPoint += j.point;
-    });
-    return {
-      cost: sumCost,
-      point: sumPoint,
-    };
-  });
-
-  test.forEach((v) => {
-    if (v.cost < 100 && v.point > dp[v.cost]) dp[v.cost] = v.point;
-  });
-}
-
-console.log(Math.max(...dp));
+// 각 아이템별로 100까지 돌려주면 되나?
+// 이후 더ㅏ한 값을 어케구하지?
 
 // 20명 이하이므로 dp만 잘 활용한다면 몇번 반복해도 됨
 
@@ -72,3 +46,42 @@ console.log(Math.max(...dp));
 
 // 메모리 초과나네...
 // 답지보자...
+
+// arr.forEach((v) => {
+//   if (dp[v.cost] !== undefined) dp[v.cost] = v.point;
+// });
+
+// const gets = (arr, pick, energe = 100) => {
+//   const result = [];
+//   if (energe < 0) return [];
+//   if (pick === 1) return arr.map((v) => [v]);
+
+//   arr.forEach((fix, idx, origin) => {
+//     const rest = arr.slice(idx + 1);
+//     const combi = gets(rest, pick - 1, energe - fix.cost);
+//     const attached = combi.map((v) => [fix, ...v]);
+//     result.push(...attached);
+//   });
+//   return result;
+// };
+
+// for (let p = 2; p <= Number(input[0]); p++) {
+//   const test = gets(arr, p).map((v) => {
+//     let sumCost = 0;
+//     let sumPoint = 0;
+//     v.forEach((j) => {
+//       sumCost += j.cost;
+//       sumPoint += j.point;
+//     });
+//     return {
+//       cost: sumCost,
+//       point: sumPoint,
+//     };
+//   });
+
+//   test.forEach((v) => {
+//     if (v.cost < 100 && v.point > dp[v.cost]) dp[v.cost] = v.point;
+//   });
+// }
+
+// console.log(Math.max(...dp));
