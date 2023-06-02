@@ -6,6 +6,8 @@ const dir = `../test/${fileName}.txt`;
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split("\n");
 
+const cnt = Number(input[0]);
+
 const costs = input[1].split(" ").map((v) => Number(v));
 const points = input[2].split(" ").map((v) => Number(v));
 
@@ -13,19 +15,23 @@ const arr = costs.map((v, i) => ({ cost: v, point: points[i] }));
 
 const dp = Array(100).fill(0); // dp를 기록할 100개?
 
-console.log(dp);
+const dp2 = Array(100)
+  .fill(0)
+  .map((v) => Array(cnt).fill(0)); // dp를 기록할 100개?
 
+console.log(dp2);
+
+// 2차원 배열로 풀어야되나....
 // 이런식으로 100번까지 움직이면서..?
-dp.forEach((d) => {
-  arr.forEach((v) => {
-    const { cost, point } = v;
+for (let i = 0; i < 100; i++) {
+  for (let j = 0; j < cnt; j++) {
+    const { cost, point } = arr[j];
     console.log(cost, point);
-  });
-});
+  }
+}
 
 // 각 아이템별로 100까지 돌려주면 되나?
 // 이후 더ㅏ한 값을 어케구하지?
-
 // 20명 이하이므로 dp만 잘 활용한다면 몇번 반복해도 됨
 
 // 조합 문제로 풒 수 있긴 할텐데, 이게 어디가 dp지?
