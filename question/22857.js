@@ -9,35 +9,41 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 const [cnt, k] = input[0].split(" ").map((v) => Number(v));
 const numbers = input[1].split(" ").map((v) => Number(v));
 
-const dp = numbers.map((v) => (v % 2 === 0 ? 1 : 0));
-let sIdx = 0; // 특정 조건에서 sIdx를 넘기면 될 것 같은데...
+let answer = 0;
+let sIdx = 0;
+let eIdx = 0;
+let sum = 0;
+let jump = k;
 
-for (let i = 1; i < cnt; i++) {
-  let jump = k;
-  // console.log("스타트 인덱스", sIdx, jump);
-  for (let j = sIdx; j < i; j++) {
-    if (numbers[j] % 2 === 1 && jump === 0) {
-      break;
-    } else if (numbers[j] % 2 === 1) {
-      jump--;
-    }
-
-    if (numbers[j] % 2 === 0 && dp[j] <= dp[i]) {
-      dp[i] = dp[j] + 1;
-    }
-  }
-
-  if (jump < 0) {
-    jump++;
-    sIdx++;
-  }
-  // 이거 지그 조건이 이상해...
-  // while (numbers[sIdx] % 2 === 1) {
-  //   sIdx++;
-  // }
+if (cnt === 1) {
+  const answer = numbers[0] % 2 === 0 ? 1 : 0;
+  console.log(answer);
+  return;
 }
 
-console.log(dp);
+while (sIdx < cnt - 1 || eIdx < cnt - 1) {
+  if (jump >= 0) {
+    // 점프 가능할 때
+    if (numbers[eIdx] % 2 === 0) {
+      sum += 1;
+    } else {
+      jump -= 1;
+    }
+    eIdx++;
+  } else {
+    // 점푸 불가능 할 때
+    while (numbers[sIdx] % 2 === 0) {
+      sIdx += 1;
+      sum -= 1;
+    }
+    sIdx += 1;
+    jump += 1;
+  }
+
+  if (sum > answer) answer = sum;
+}
+
+console.log(answer);
 
 // 삭제할 수 있는 횟수는 '최대' k, 다 삭제하지 않아도 된다.
 // k를 다 소진했으면 삭제가 불가능하다. 이 때 어떻게 처리해야되지?
