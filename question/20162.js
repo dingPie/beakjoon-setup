@@ -9,16 +9,17 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 const cnt = Number(input[0]);
 const numbers = input.slice(1).map((v) => Number(v));
 
-// const dp = [...numbers];
 const dp = Array(cnt).fill(0);
-dp[0] = numbers[0];
 
-for (let i = 1; i < cnt; i++) {
+for (let i = 0; i < cnt; i++) {
+  let max = numbers[i];
   for (let j = 0; j < i; j++) {
-    //
+    if (numbers[i] > numbers[j] && dp[j] + numbers[i] > max) {
+      max = dp[j] + numbers[i];
+    }
   }
+  dp[i] = max;
 }
-// 다시풀어보자!
 
 console.log(Math.max(...dp));
 // 안먹을때는 이전까지의 dp
