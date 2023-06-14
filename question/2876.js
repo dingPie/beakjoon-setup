@@ -14,7 +14,9 @@ const dp = Array(cnt)
   .map((v) => Array(5).fill(0));
 
 dp[0][numbers[0][0] - 1] += 1;
-dp[0][numbers[0][1] - 1] += 1;
+if (numbers[0][0] !== numbers[0][1]) {
+  dp[0][numbers[0][1] - 1] += 1;
+}
 
 for (let i = 1; i < cnt; i++) {
   const [a, b] = numbers[i];
@@ -26,15 +28,16 @@ let maxCnt = 0;
 let minGrade = 5;
 
 dp.forEach((v) => {
-  for (let i = v.length - 1; i >= 0; i--) {
-    if (maxCnt < v[i]) maxCnt = v[i];
-    minGrade = i + 1;
+  for (let i = 0; i < 5; i++) {
+    if (maxCnt < v[i]) {
+      maxCnt = v[i];
+      minGrade = i + 1;
+    } else if (maxCnt === v[i] && i + 1 < minGrade) minGrade = i + 1;
   }
 });
 
 console.log(`${maxCnt} ${minGrade}`);
-
-// 왜틀려 ㅅㅂ
+console.log(dp);
 
 // const dp = Array(cnt)
 //   .fill(0)
