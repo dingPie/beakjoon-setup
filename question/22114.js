@@ -41,3 +41,5 @@ for (let s = 0; s < cnt - 1; s++) {
 }
 
 console.log("end", max);
+
+// 아니 예제 1, 2가 왜 다른지 도통모르겠네...
