@@ -8,3 +8,15 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 
 const n = Number(input[0]);
 const numbers = input[1].split(" ").map((v) => Number(v));
+
+const dp = Array(n).fill(1);
+
+for (let i = 1; i < n; i++) {
+  for (let j = 0; j < i; j++) {
+    if (numbers[i] > numbers[j] && dp[i] <= dp[j]) {
+      dp[i] = dp[j] + 1;
+    }
+  }
+}
+
+console.log(Math.max(...dp));
