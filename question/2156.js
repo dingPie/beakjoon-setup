@@ -9,6 +9,14 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 const n = Number(input[0]);
 const numbers = input.slice(1).map((v) => Number(v));
 
+if (n === 1) {
+  console.log(numbers[0]);
+  return;
+} else if (n === 2) {
+  console.log(numbers[0] + numbers[1]);
+  return;
+}
+
 const dp = Array(n).fill(0);
 dp[0] = numbers[0];
 dp[1] = numbers[1] + numbers[0];
