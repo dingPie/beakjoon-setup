@@ -16,20 +16,32 @@ for (let i = 1; i < raw.length; i += 3) {
   arr.push([r1, r2]);
 }
 
-console.log(arr);
-
 const answer = arr.map((v) => {
-  const [r1, r2] = v;
-  const sum1 = r1.reduce((a, c) => a + c, 0);
-  const sum2 = r2.reduce((a, c) => a + c, 0);
-  const total = sum1 + sum2;
-  const t = [Array(r1.length).fill(total), Array(r1.length).fill(total)];
-  console.log(total);
-  console.log(t);
+  const colLength = v.length;
+  const rowLength = v[0].length;
 
-  // 이전 값을 어디서 가져오지 ...
-  // 하 모르겠다 .
+  const dp = Array(colLength)
+    .fill(0)
+    .map(() => Array(rowLength).fill(0));
+
+  dp[0][0] = v[0][0];
+  dp[1][0] = v[1][0];
+
+  for (let i = 1; i < rowLength; i++) {
+    dp[0][i] = Math.max(dp[1][i - 1], dp[1][i - 2] || 0) + v[0][i];
+    dp[1][i] = Math.max(dp[0][i - 1], dp[0][i - 2] || 0) + v[1][i];
+  }
+
+  return Math.max(dp[0].at(-1), dp[1].at(-1));
 });
+
+console.log(answer.join("\n"));
+
+// 해당 칸에 다 더해진 상태에서 해야될거같고.
+// 이미 지나온 곳에 대해서만 비교를 하면 되려나?
+
+// 1. 500 -10 - 20 -> 470
+// 2. 500 -10 - 20 - 10 -> 460
 
 // 이거 원형 스티커 그거네
 
