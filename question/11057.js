@@ -7,29 +7,21 @@ const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim();
 const n = Number(input);
 
-console.log(n);
+// console.log(n);
 
 const dp = Array(n)
   .fill(0)
-  .map(() => Array(10).fill(0));
-
-dp[0].forEach((v, i) => (dp[0][i] = 1));
-console.log(dp);
-
-const arr = Array(10).fill(11);
-
-const t = arr.reduce((a, c, i) => a + (c - i - 1) * (i + 1), 0);
-console.log(t);
-
-// 음
+  .map(() => Array(10).fill(1));
 
 for (let i = 1; i < n; i++) {
-  for (let j = 1; j < dp.length; j++) {
-    dp[i][j] = dp[i - 1].slice(0, j).reduce((a, c) => a + c, 0);
-    // console.log(dp[i]);
+  for (let j = 0; j < dp[i].length; j++) {
+    dp[i][j] = dp[i - 1].slice(0, j + 1).reduce((a, c) => a + c, 0) % 10007;
   }
-  console.log(dp);
 }
+
+const answer = dp.at(-1).reduce((a, c) => a + c, 0);
+
+console.log(answer % 10007);
 
 // dp[i] = dp[i - 1].reduce((a, c) => a + c, 0);
 
