@@ -7,19 +7,12 @@ const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split("\n");
 
 const [n, quantity] = input[0].split(" ").map((v) => Number(v));
-console.log(n, quantity);
 
-const board = input
-  .slice(1, n + 1)
-  .map((v) => v.split(" ").map((v) => Number(v)));
+const dp = input.slice(1, n + 1).map((v) => v.split(" ").map((v) => Number(v)));
 
 const coords = input
   .slice(n + 1)
-  .map((v) => v.split(" ").map((v) => Number(v)));
-
-const dp = [...board].map((v) => [...v]);
-
-// console.log(board, dp);
+  .map((v) => v.split(" ").map((v) => Number(v) - 1));
 
 for (let i = 0; i < n; i++) {
   for (let j = 0; j < n; j++) {
@@ -32,32 +25,16 @@ for (let i = 0; i < n; i++) {
     }
   }
 }
-console.log(board);
 
-const answer = coords.map(([x1, y1, x2, y2]) => {
-  if (x1 === x2 && y1 === y2) {
-    console.log(
-      x1,
-      y1,
-      x2,
-      y2,
-      "여기",
-      [y1 - 1, x1 - 1],
-      [y2 - 1, x2 - 1],
-      board[y2 - 1],
-      board[y2 - 1][x2 - 1]
-    );
-    return board[y2 - 1][x2 - 1];
-  }
-  const d1 = dp[y1 - 2] ? dp[y1 - 2][x2 - 1] || 0 : 0;
-  const d2 = dp[y2 - 1] ? dp[y2 - 1][x1 - 2] || 0 : 0;
-  const d3 = dp[y1 - 2] ? dp[y1 - 2][x1 - 2] || 0 : 0;
-  const d4 = dp[y2 - 1][x2 - 1];
-  console.log("answer?", d3, d1, d2, d4);
+const answer = coords.map(([y1, x1, y2, x2]) => {
+  const d1 = dp[y1 - 1] ? dp[y1 - 1][x2] || 0 : 0;
+  const d2 = dp[y2] ? dp[y2][x1 - 1] || 0 : 0;
+  const d3 = dp[y1 - 1] ? dp[y1 - 1][x1 - 1] || 0 : 0;
+  const d4 = dp[y2][x2];
   return d4 - d1 - d2 + d3;
 });
 
-console.log(answer);
+console.log(answer.join("\n"));
 
 // x -> y를 바꿔야되나 ㅅㅂ..
 
