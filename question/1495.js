@@ -11,27 +11,26 @@ const volumes = input[1].split(" ").map((v) => Number(v));
 
 const dp = Array(n + 1)
   .fill(0)
-  .map((v) => Array(m + s + 1).fill(false));
+  .map((v) => Array(m + 1).fill(false));
 
 dp[0][s] = true;
 
 const find = () => {
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
-      if (!dp[i][j]) continue;
-      if (j - volumes[i] >= 0) dp[i + 1][j - volumes[i]] = true;
-      if (j + volumes[i] <= m) dp[i + 1][j + volumes[i]] = true;
+  for (let i = 1; i <= n; i++) {
+    for (let j = 0; j <= m; j++) {
+      if (!dp[i - 1][j]) continue;
+      if (j - volumes[i - 1] >= 0) dp[i][j - volumes[i - 1]] = true;
+      if (j + volumes[i - 1] <= m) dp[i][j + volumes[i - 1]] = true;
     }
 
-    const isFail = dp[i + 1].every((v) => !v);
+    const isFail = dp[i].every((v) => !v);
     if (isFail) {
       return -1;
     }
   }
 
-  const last = dp.at(-1);
   for (let i = m; i >= 0; i--) {
-    if (last[i]) {
+    if (dp.at(-1)[i]) {
       return i;
     }
   }
