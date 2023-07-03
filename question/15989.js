@@ -9,21 +9,16 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 const n = Number(input[0]);
 const numbers = input.slice(1).map((v) => Number(v));
 
-console.log(n, numbers);
-
-// 순서가 다른건 같은걸로 침 -> 조합
-
 const dp = {
   1: 1,
   2: 2,
   3: 3,
-  4: 4,
-  5: 5,
-  6: 7, //a 뭐지...
 };
 
-// 111, 12, 3
-// 1111 112 13 22
+for (let i = 4; i <= 10000; i++) {
+  if (i % 6 === 1) dp[i] = dp[i - 1] + Math.floor(i / 6);
+  else dp[i] = dp[i - 1] + Math.floor(i / 6) + 1;
+}
 
-// 5 -> 11111 1112 113 122 23
-// 6 ->  111111 11112 1113 1122 123 222 33
+const answer = numbers.map((v) => dp[v]);
+console.log(answer.join("\n"));
