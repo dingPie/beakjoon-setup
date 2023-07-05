@@ -7,37 +7,38 @@ const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim();
 const n = Number(input);
 
-const triDp = {
-  0: 0,
+const dummy = {
+  1: 1,
 };
 
-const dp = {
-  0: 0,
+const tetra = {
+  1: 1,
 };
 
-for (let i = 1; i <= n; i++) {
-  triDp[i] = triDp[i - 1] + i;
-  if (dp[i - 1] + triDp[i] >= n) break;
-  dp[i] = dp[i - 1] + triDp[i];
+for (let i = 2; i <= n; i++) {
+  dummy[i] = dummy[i - 1] + i;
+  if (tetra[i - 1] + dummy[i] >= n) break;
+  tetra[i] = tetra[i - 1] + dummy[i];
 }
 
-const dp2 = {};
+const dp = {};
 
-for (const key in dp) {
-  dp2[dp[key]] = 1;
+for (const key in tetra) {
+  dp[tetra[key]] = 1;
 }
 
 for (let i = 2; i <= n; i++) {
-  if (!dp2[i]) {
-    dp2[i] = n;
-    for (let j = i; j >= i / 2; j--) {
-      dp2[i] = Math.min(dp2[j] + dp2[i - j], dp2[i]);
-      if (dp2[i] === 2) break;
-    }
+  if (dp[i]) continue;
+  for (let j in tetra) {
+    const k = tetra[j];
+    if (i < k) break;
+    dp[i] = Math.min(dp[k] + dp[i - k] || n, dp[i] || n);
   }
 }
 
-console.log(dp2[n]);
+console.log(dp[n]);
+
+// 11번에서 틀리네ㅠ..
 
 // 시간초과.. 아마 마지막 로직이 너무 오래걸리는듯.
 
