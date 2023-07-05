@@ -11,27 +11,26 @@ const dummy = {
   1: 1,
 };
 
-const tetra = {
-  1: 1,
-};
+const tetra = [1];
 
 for (let i = 2; i <= n; i++) {
   dummy[i] = dummy[i - 1] + i;
-  if (tetra[i - 1] + dummy[i] >= n) break;
-  tetra[i] = tetra[i - 1] + dummy[i];
+  if (tetra.at(-1) + dummy[i] > n) break;
+  tetra.push(tetra.at(-1) + dummy[i]);
 }
 
 const dp = {};
 
-for (const key in tetra) {
-  dp[tetra[key]] = 1;
-}
+tetra.forEach((v) => {
+  dp[v] = 1;
+});
 
 for (let i = 2; i <= n; i++) {
   if (dp[i]) continue;
-  for (let j in tetra) {
+
+  for (let j = 0; j < tetra.length; j++) {
     const k = tetra[j];
-    if (i < k) break;
+    if (i < k + 1) break;
     dp[i] = Math.min(dp[k] + dp[i - k] || n, dp[i] || n);
   }
 }
