@@ -8,31 +8,26 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 
 const getAnswer = (n, board) => {
   board[0].forEach((v, i) => (board[0][i] = board[0][1]));
-  // board.at(-1).forEach((v, i) => (board.at(-1)[i] = board.at(-1)[1]));
 
-  for (let i = 1; i < n; i++) {
-    const c1 =
-      board[i][0] +
-      Math.min(
-        board[i - 1][0],
-        board[i - 1][1],
-        board[i - 1][1] + board[i - 1][2]
-      );
-    //
+  for (let i = 1; i < n - 1; i++) {
+    const c1 = board[i][0] + Math.min(board[i - 1][0], board[i - 1][1]);
     const c2 =
       board[i][1] + Math.min(board[i - 1][0], board[i - 1][1], board[i - 1][2]);
-    const c3 = board[i][2] + Math.min(board[i - 1][1], board[i - 1][2]);
+    const c3 = board[i][2] + Math.min(c2, board[i - 1][2]);
     board[i] = [c1, c2, c3];
   }
 
-  console.log("!!", board);
+  //   console.log(board);
+  const e1 = board.at(-2)[0] + board.at(-1)[0];
+  const e2 = board.at(-2)[1];
+  const e3 = board.at(-2)[2];
 
-  return board.at(-1)[1];
+  const result = board.at(-1)[1] + Math.min(e1, e2, e3);
+
+  return result;
 };
 
 const arr = [];
-
-// 하 반례케이스...
 
 let i = 0;
 
@@ -53,27 +48,16 @@ const answer = arr.map((v, i) => `${i + 1}. ${v}`);
 
 console.log(answer.join("\n"));
 
-// const board = input
-//   .slice(1, n + 1)
-//   .map((v) => v.split(" ").map((v) => Number(v)));
+// 이론상은 맞는데 틀린 이유를 모르겠네
+
+// 현재 이동중인 정점의 위치도 계산할까...
 
 // // 어차피 시작, 끝은 정해져있으니 최소 최대를 구할필요 없다.
-// //
 
 // board[0].forEach((v, i) => (board[0][i] = board[0][1]));
 // board.at(-1).forEach((v, i) => (board.at(-1)[i] = board.at(-1)[1]));
 
 // // 각 시작 지점에서 출발했을 때 최소값을 아래랑 더해가면서 가면 듯?
-// // 어차피 행은 3개로 고정
-
-// // 로직 수정해야 함.
-// for (let i = 1; i < n; i++) {
-//   const c1 = board[i][0] + Math.min(board[i - 1][0], board[i - 1][1]);
-//   const c2 =
-//     board[i][1] + Math.min(board[i - 1][0], board[i - 1][1], board[i - 1][2]);
-//   const c3 = board[i][2] + Math.min(board[i - 1][1], board[i - 1][2]);
-//   board[i] = [c1, c2, c3];
-// }
 
 // const answer = board.at(-1)[1];
 
@@ -83,3 +67,6 @@ console.log(answer.join("\n"));
 
 // 하 ㅅㅂ 옆으로도 되네.
 // 그럼 맨 처음에선
+
+// 내려갈 떄. 첫줄은 ok.
+// 다음줄부터.
