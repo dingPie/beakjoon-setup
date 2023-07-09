@@ -9,19 +9,50 @@ const input = fs.readFileSync(dir).toString().trim().split("\n");
 const n = Number(input[0]);
 const arr = input[1].split("");
 
-const isNext = (s) => {
-  if (s === "B") return "O";
-  if (s === "O") return "J";
-  if (s === "J") return "B";
+const isNext = (s, e) =>
+  (s === "B" && e === "O") ||
+  (s === "O" && e === "J") ||
+  (s === "J" && e === "B");
+
+const dfs = (arr) => {
+  const need = [0];
+  const obj = {};
+
+  arr.forEach((v, i) => {
+    obj[i] = Infinity;
+  });
+  obj[0] = 0;
+
+  while (need.length) {
+    const idx = need.shift();
+    if (idx === arr.length - 1) continue;
+    for (let i = idx + 1; i < arr.length; i++) {
+      if (isNext(arr[idx], arr[i]) && obj[idx] + (i - idx) ** 2 < obj[i]) {
+        need.push(i);
+        obj[i] = obj[idx] + (i - idx) ** 2;
+      }
+    }
+  }
+
+  return obj;
 };
 
-const dp = Array(n).fill(-1);
+const answer = dfs(arr);
+console.log(answer[n - 1] === Infinity ? -1 : answer[n - 1]);
 
-for (let i = 1; i < n; i++) {
-  for (let j = 0; j < i; j++) {
-    // 여기 안에서 그 로직 돌려야 해..?
-  }
-}
+// const isNext = (s) => {
+//   if (s === "B") return "O";
+//   if (s === "O") return "J";
+//   if (s === "J") return "B";
+// };
+
+// const dp = Array(n).fill(-1);
+
+// for (let i = 1; i < n; i++) {
+//   for (let j = 0; j < i; j++) {
+//     // 여기 안에서 그 로직 돌려야 해..?
+//   }
+// }
 
 // "B JBO JOJ OOJOB OOO"
 // 9 9 25 9
