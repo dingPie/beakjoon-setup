@@ -6,9 +6,8 @@ const dir = `../test/${fileName}.txt`;
 const fs = require("fs");
 const input = fs.readFileSync(dir).toString().trim().split("\n");
 
-const n = Number(input[0]);
-
 let max = 0;
+const mod = 1000000009;
 
 const nums = input.slice(1).map((v) =>
   v.split(" ").map((v) => {
@@ -19,15 +18,23 @@ const nums = input.slice(1).map((v) =>
 
 const dp = Array(max)
   .fill(0)
-  .map((v) => Array(max).fill(0));
+  .map((v) => Array(max + 1).fill(0));
+dp[0][1] = 1;
+dp[1][1] = 1;
+dp[1][2] = 1;
+dp[2][1] = 1;
+dp[2][2] = 2;
+dp[2][3] = 1;
 
-for (let i = 1; i < max; i++) {
-  for (let j = 1; j < max; j++) {
-    dp[i][j] = dp[i][j];
+for (let i = 3; i < max; i++) {
+  for (let j = 1; j <= max; j++) {
+    dp[i][j] = (dp[i - 3][j - 1] + dp[i - 2][j - 1] + dp[i - 1][j - 1]) % mod;
   }
 }
 
-console.log(dp);
+const answer = nums.map(([i, j]) => dp[i - 1][j]);
+
+console.log(answer.join("\n"));
 
 // 최대값인 1000 * 1000 돌려봐야 ㄱㅊ은듯.
 
