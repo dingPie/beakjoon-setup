@@ -1,58 +1,70 @@
-// 이거 최대큰수랑 비슷한 문제.
-// 냅색인가? 아무튼
-// 우표문제!
+// 이건 배열이라 시간초과남.
+// function solution(n, stations, w) {
+//   const dp = Array(n).fill(false);
 
-// 이걸 뜯었을 때 / 안뜯었을때 최대값을 계산해야 함.
-// dp를 어떻게 구성해야 되지? 2차원배열? 1차웡배열?
+//   const settle = (idx) => {
+//     for (let i = idx - w; i <= idx + w; i++) {
+//       if (i < 0) continue;
+//       if (i > n) break;
+//       dp[i] = true;
+//     }
+//   };
 
-// 냅색 알고리즘이랑 비슷하니까 2차원 배열로 구성해야 될 것 같고
-// 어떻게 채워나가지 ?
+//   stations.forEach((v) => {
+//     settle(v - 1);
+//   });
 
-const sticker = [14, 6];
-function solution(sticker) {
-  const n = sticker.length;
-  if (n === 1) return sticker[0];
-  else if (n === 2) return Math.max(sticker[0], sticker[1]);
-  const dp = Array(n).fill(0);
+//   let idx = 0;
+//   let answer = 0;
 
-  if (sticker[0] - sticker.at(-1) > 0) {
-    sticker[0] -= sticker.at(-1);
+//   while (idx < n) {
+//     while (dp[idx]) idx += 1;
+//     if (idx < n) {
+//       settle(idx + w);
+//       idx += w;
+//       answer += 1;
+//     }
+//   }
+
+//   return answer;
+// }
+
+function solution(n, stations, w) {
+  let answer = 0;
+  let idx = 0;
+  let settled = 0;
+
+  const setLeng = w * 2 + 1;
+
+  if (stations[0] - w <= 1) settled = stations[0] + w - 1;
+
+  // Math.ceil 로 구하면 될 것 같고/
+  // 그럼 어디까지 설치된지 알아야함.
+
+  for (let i = 0; i < stations.length; i++) {
+    const station = stations[i] - 1; // idx 기준
+
+    const t = Math.ceil((station - settled) / setLeng);
+    answer += t;
+    settled += t * setLeng;
+
+    console.log(t, settled);
+    // console.log(station);
   }
-
-  dp[0] = sticker[0];
-  dp[1] = Math.max(sticker[0], sticker[1]);
-
-  for (let i = 2; i < n; i++) {
-    dp[i] = Math.max(dp[i - 1], dp[i - 2] + sticker[i]);
-  }
-
-  return dp.at(-1);
+  console.log("answer", answer);
 }
-const answer = solution(sticker);
-console.log(answer);
 
-// 효율성은 싹 통과 d
+const t1 = solution(11, [4, 11], 1);
+const t2 = solution(16, [9], 2);
+// const t3 = solution(13, [3, 7, 11], 1);
+// const t4 = solution(10, [1, 9, 5], 1);
+// const t5 = solution(10, [2, 3, 4], 1);
+// console.log(t1);
+// console.log(t2);
+// console.log(t3);
+// console.log(t4);
 
-// n번째 숫자까지만? 전부다? dp돌려?
+// 슬라이딩 도어 문제였나?
+// dp... 식 일것 같은데 처
 
-// 계단처럼 n번쨰를 진행했을 떄 잃게되는 수를 기록해야 할 듯?
-
-//
-
-// 이걸 고르고 이게 빠진 dp를 고르느냐 /
-// 이걸 안고르고 그냥 이전 dp를 이어가느냐 중 어떤게 더 큰지?
-
-// 골랐을 떄 어떻게 처리하지?
-
-// 3개중 어떤걸 선택?
-
-//  [14, 6, 5, 11, 3, 9, 2, 10];
-
-// 14-10
-// 4 6
-// 4 6 9
-// 4 6 9 17
-// 4 6 9 17 17
-// 4 6 9 17 17 26
-// 4 6 9 17 17 26 26
-// 4 6 9 17 17 26 26 36
+// 쉽게 생각해서 풀어봐도 될 것 같은데.
