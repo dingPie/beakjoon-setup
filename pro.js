@@ -31,38 +31,44 @@
 
 function solution(n, stations, w) {
   let answer = 0;
-  let idx = 0;
   let settled = 0;
-
-  const setLeng = w * 2 + 1;
-
-  if (stations[0] - w <= 1) settled = stations[0] + w - 1;
-
-  // Math.ceil 로 구하면 될 것 같고/
-  // 그럼 어디까지 설치된지 알아야함.
+  const setLeng = w * 2 + 1; // 하나의 기지국이 총 작동거리
 
   for (let i = 0; i < stations.length; i++) {
-    const station = stations[i] - 1; // idx 기준
+    const station = stations[i];
+    const t = Math.ceil((station - w - settled - 1) / setLeng); // 4 5 이렇게 붙어있는 경우에는 설치할 필요가 없으므로 1을 빼줌
 
-    const t = Math.ceil((station - settled) / setLeng);
-    answer += t;
-    settled += t * setLeng;
-
-    console.log(t, settled);
-    // console.log(station);
+    answer = answer + t;
+    settled = station + w;
   }
-  console.log("answer", answer);
+
+  const t = Math.ceil((n - settled) / setLeng);
+  answer += t;
+
+  return answer;
 }
 
-const t1 = solution(11, [4, 11], 1);
-const t2 = solution(16, [9], 2);
+// const t1 = solution(11, [4, 11], 1);
+// const t2 = solution(16, [9], 2);
 // const t3 = solution(13, [3, 7, 11], 1);
-// const t4 = solution(10, [1, 9, 5], 1);
+const t4 = solution(10, [1, 5, 9], 1);
 // const t5 = solution(10, [2, 3, 4], 1);
+// const t6 = solution(10, [2, 3, 4], 5);
+// const t7 = solution(10, [3], 10);
+// const t8 = solution(10, [3], 3);
+const t9 = solution(5, [1, 2, 3, 4, 5], 0);
+// const t10 = solution(200000000, [100000000], 5);
+
 // console.log(t1);
 // console.log(t2);
 // console.log(t3);
-// console.log(t4);
+console.log(t4);
+// console.log(t5);
+// console.log(t6);
+// console.log(t7);
+// console.log(t8);
+console.log(t9);
+// console.log(t10);
 
 // 슬라이딩 도어 문제였나?
 // dp... 식 일것 같은데 처
